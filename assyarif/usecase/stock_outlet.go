@@ -3,6 +3,7 @@ package usecase
 import (
 	"assyarif-backend-web-go/domain"
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -128,14 +129,55 @@ func (c *stockOutletUseCase) DecreaseDashboard(ctx context.Context, req *domain.
 
 func (c *stockOutletUseCase) IncreaseDashboardMultiple(ctx context.Context, req []domain.StockOutlet) ([]domain.StockOutlet, error) {
 	stockOutlets := []domain.StockOutlet{}
-
+	fmt.Println("masuk usecase")
 	for _, stockReq := range req {
+		fmt.Println("masuk usecase loop")
+		// stocks := c.stockOutletRepository.RetrieveAllStockOutlet()
+		// if stocks == nil {
+		// 	fmt.Println("StockReq1", stockReq)
+		// 	st, err := c.stockOutletRepository.CreateStockOutlet(&stockReq)
+		// 	if err != nil {
+		// 		fmt.Println("StockReq2", stockReq, "Stock2", st)
+		// 		return nil, err
+		// 	}
+		// 	stockOutlets = append(stockOutlets, *st)
+		// }
+		// if stock length 0
+		// if errStocks != nil {
+		// 	fmt.Println("StockReq1", stockReq)
+		// 	st, err := c.stockOutletRepository.CreateStockOutlet(&stockReq)
+		// 	if err != nil {
+		// 		fmt.Println("StockReq2", stockReq, "Stock2", st)
+		// 		return nil, err
+		// 	}
+		// 	stockOutlets = append(stockOutlets, *st)
+		// }
+
 		stocks, errStocks := c.stockOutletRepository.RetrieveAllStockOutlet()
+		fmt.Println("StockReq1", stockReq)
+		fmt.Println("Stocks", stocks)
 		if errStocks != nil {
-			return nil, errStocks
+			fmt.Println("StockReq1", stockReq)
+			st, err := c.stockOutletRepository.CreateStockOutlet(&stockReq)
+			if err != nil {
+				fmt.Println("StockReq2", stockReq, "Stock2", st)
+				return nil, err
+			}
+			stockOutlets = append(stockOutlets, *st)
+		}
+		if len(stocks) == 0 {
+			fmt.Println("StockReq1", stockReq)
+			st, err := c.stockOutletRepository.CreateStockOutlet(&stockReq)
+			if err != nil {
+				fmt.Println("StockReq2", stockReq, "Stock2", st)
+				return nil, err
+			}
+			stockOutlets = append(stockOutlets, *st)
 		}
 		for _, st := range stocks {
+			fmt.Println("StockReq", stockReq, "Stock", st)
 			if st.IdStuff == stockReq.IdStuff {
+				fmt.Println("StockReq Match", stockReq, "Stock Match", st)
 				increaseStock := st.Quantity + stockReq.Quantity
 				stockReq = domain.StockOutlet{
 					ID:        st.ID,
