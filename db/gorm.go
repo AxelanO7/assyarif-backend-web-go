@@ -87,7 +87,7 @@ func SeedOutlet() {
 		Name:    "Outlet 1",
 		Address: "Jl. Raya Kuta No. 1",
 		Phone:   "08123456789",
-		IdUser:  1,
+		IdUser:  2,
 	}
 	GormClient.DB.Create(&outlet)
 }
