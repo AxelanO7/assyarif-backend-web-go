@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"assyarif-backend-web-go/domain"
+	"fmt"
 	"strconv"
 
 	"github.com/asaskevich/govalidator"
@@ -269,6 +270,7 @@ func (t *StockOutletHandler) IncreaseDashboardMultiple(c *fiber.Ctx) error {
 			"error":   er.Error(),
 		})
 	}
+	fmt.Println("masuk delivery")
 	res, err := t.StockOutletUC.IncreaseDashboardMultiple(c.Context(), req.StockOutlets)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
