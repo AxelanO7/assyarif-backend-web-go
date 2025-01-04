@@ -81,3 +81,13 @@ func SeedUser() {
 	GormClient.DB.Create(&userSupplier)
 	GormClient.DB.Create(&userOutlet)
 }
+
+func SeedOutlet() {
+	outlet := domain.Outlet{
+		Name:    "Outlet 1",
+		Address: "Jl. Raya Kuta No. 1",
+		Phone:   "08123456789",
+		IdUser:  1,
+	}
+	GormClient.DB.Create(&outlet)
+}
