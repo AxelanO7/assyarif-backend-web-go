@@ -42,6 +42,7 @@ type StockUseCase interface {
 	CreateStock(ctx context.Context, req *Stock) (*Stock, error)
 	UpdateStock(ctx context.Context, req *Stock) (*Stock, error)
 	DeleteStock(ctx context.Context, id uint) error
+	IncreaseStocks(ctx context.Context, req []Stock) ([]Stock, error)
 	DecreaseStocks(ctx context.Context, req []Stock) ([]Stock, error)
 	UpdateDescription(ctx context.Context, req []UpdateDescriptionRequest) ([]Stock, error)
 }

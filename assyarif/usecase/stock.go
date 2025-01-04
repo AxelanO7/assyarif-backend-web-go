@@ -86,6 +86,32 @@ func (c *stockUseCase) DecreaseStocks(ctx context.Context, req []domain.Stock) (
 	return resultStocks, nil
 }
 
+func (c *stockUseCase) IncreaseStocks(ctx context.Context, req []domain.Stock) ([]domain.Stock, error) {
+	stocks, err := c.stockRepository.RetrieveAllStock()
+	resultStocks := []domain.Stock{}
+	if err != nil {
+		return nil, err
+	}
+	for _, stock := range stocks {
+		for _, reqStock := range req {
+			if stock.IdStuff == reqStock.IdStuff {
+				reqStock.Quantity = stock.Quantity + reqStock.Quantity
+				res, err := c.stockRepository.UpdateStockByStuffID(&reqStock)
+				if err != nil {
+					return nil, err
+				}
+				resultStocks = append(resultStocks, *res)
+			}
+		}
+	}
+	afterStocks, err := c.stockRepository.RetrieveAllStock()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("afterStocks", afterStocks)
+	return resultStocks, nil
+}
+
 func (c *stockUseCase) UpdateDescription(ctx context.Context, req []domain.UpdateDescriptionRequest) ([]domain.Stock, error) {
 	stocks, err := c.stockRepository.RetrieveAllStock()
 	resultStocks := []domain.Stock{}
