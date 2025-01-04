@@ -83,6 +83,7 @@ func (a *posgreStockOutletRepository) DeleteStockOutlet(id uint) error {
 }
 
 func (a *posgreStockOutletRepository) UpdateStockOutletsMultiple(user []domain.StockOutlet) ([]domain.StockOutlet, error) {
+	fmt.Println("masuk repository update")
 	for _, u := range user {
 		err := a.DB.
 			Model(domain.StockOutlet{}).
@@ -97,6 +98,7 @@ func (a *posgreStockOutletRepository) UpdateStockOutletsMultiple(user []domain.S
 }
 
 func (a *posgreStockOutletRepository) CreateStockOutletsMultiple(user []domain.StockOutlet) ([]domain.StockOutlet, error) {
+	fmt.Println("masuk repository create")
 	for _, u := range user {
 		err := a.DB.
 			Model(domain.StockOutlet{}).
