@@ -61,6 +61,7 @@ func RegisterTableToMigrate(db *gorm.DB) {
 
 func SeedData() {
 	SeedUser()
+	SeedOutlet()
 }
 
 func SeedUser() {
