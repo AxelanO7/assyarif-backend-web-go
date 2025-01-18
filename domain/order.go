@@ -29,6 +29,7 @@ type OrderRepository interface {
 	RemoveOrderById(id string) error
 	RetrieveOrderByOutletId(id string) ([]Order, error)
 	CreateOrders(in []Order) ([]Order, error)
+	DeleteOrdersById(in []uint) error
 }
 
 type OrderUseCase interface {
@@ -39,4 +40,5 @@ type OrderUseCase interface {
 	DeleteOrderById(ctx context.Context, id string) error
 	ShowOrderByOutletId(ctx context.Context, id string) ([]Order, error)
 	AddOrders(ctx context.Context, in []Order) ([]Order, error)
+	DeleteOrdersById(ctx context.Context, in []uint) error
 }
