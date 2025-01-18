@@ -3,6 +3,7 @@ package usecase
 import (
 	"assyarif-backend-web-go/domain"
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -28,17 +29,11 @@ func (c *orderUseCase) ShowOrders(ctx context.Context) ([]domain.Order, error) {
 	if err != nil {
 		return nil, err
 	}
-	if len(resOrders) == 0 {
-		return nil, nil
-	}
 	// get all outs
 	finalOrders = resOrders
 	outs, err := c.outRepository.RetrieveOuts()
 	if err != nil {
-		return nil, err
-	}
-	if len(outs) == 0 {
-		return resOrders, nil
+		return finalOrders, nil
 	}
 	// for _, order := range resOrders {
 	// 	for _, out := range outs {
