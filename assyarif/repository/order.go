@@ -108,3 +108,15 @@ func (a *posgreOrderRepository) CreateOrders(order []domain.Order) ([]domain.Ord
 	fmt.Println(order)
 	return order, nil
 }
+
+func (a *posgreOrderRepository) DeleteOrdersById(in []uint) error {
+	fmt.Println("DeleteOrdersById Repository", in)
+	err := a.DB.
+		Model(domain.Order{}).
+		Where("id IN ?", in).
+		Delete(&domain.Order{}).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
