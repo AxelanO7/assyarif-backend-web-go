@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"assyarif-backend-web-go/domain"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -24,6 +25,7 @@ func NewOrderHandler(c *fiber.App, das domain.OrderUseCase) {
 	stuff.Delete("/:id", handler.DeleteOrderById)
 
 	stuff.Post("/multiple", handler.AddOrders)
+	stuff.Delete("/multiple/delete", handler.DeleteOrdersById)
 
 	private := api.Group("/private")
 	private.Get("/outlet/:id", handler.ShowOrderByOutletId)
@@ -186,5 +188,34 @@ func (t *OrderHandler) AddOrders(c *fiber.Ctx) error {
 		"success": true,
 		"data":    res,
 		"message": "Success create data",
+	})
+}
+
+func (t *OrderHandler) DeleteOrdersById(c *fiber.Ctx) error {
+	var in []uint
+	fmt.Println("Before DeleteOrdersById Handler", in)
+	if err := c.BodyParser(&in); err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"status":  400,
+			"success": false,
+			"data":    nil,
+			"message": err.Error(),
+		})
+	}
+	fmt.Println("After DeleteOrdersById Handler", in)
+	er := t.OrderUC.DeleteOrdersById(c.Context(), in)
+	if er != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"status":  400,
+			"success": false,
+			"data":    nil,
+			"message": er.Error(),
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status":  200,
+		"success": true,
+		"data":    nil,
+		"message": "Success delete data",
 	})
 }
