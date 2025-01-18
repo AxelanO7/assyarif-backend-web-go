@@ -32,6 +32,7 @@ func (c *orderUseCase) ShowOrders(ctx context.Context) ([]domain.Order, error) {
 		return nil, nil
 	}
 	// get all outs
+	finalOrders = resOrders
 	outs, err := c.outRepository.RetrieveOuts()
 	if err != nil {
 		return nil, err
@@ -55,7 +56,6 @@ func (c *orderUseCase) ShowOrders(ctx context.Context) ([]domain.Order, error) {
 	// 		}
 	// 	}
 	// }
-	finalOrders = resOrders
 	for i := 0; i < len(finalOrders); i++ {
 		for j := 0; j < len(outs); j++ {
 			if finalOrders[i].ID == outs[j].Order.ID {
