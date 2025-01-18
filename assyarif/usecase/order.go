@@ -3,6 +3,7 @@ package usecase
 import (
 	"assyarif-backend-web-go/domain"
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -44,4 +45,9 @@ func (c *orderUseCase) ShowOrderByOutletId(ctx context.Context, id string) ([]do
 
 func (c *orderUseCase) AddOrders(ctx context.Context, orders []domain.Order) ([]domain.Order, error) {
 	return c.orderRepository.CreateOrders(orders)
+}
+
+func (c *orderUseCase) DeleteOrdersById(ctx context.Context, in []uint) error {
+	fmt.Println("DeleteOrdersById UseCase", in)
+	return c.orderRepository.DeleteOrdersById(in)
 }
