@@ -40,7 +40,7 @@ func main() {
 	employeeUseCase := usecase.NewEmployeeUseCase(employeeRepo, timeoutContext)
 	outletUseCase := usecase.NewOutletUseCase(outletRepo, timeoutContext)
 	stockUseCase := usecase.NewStockUseCase(stockRepo, timeoutContext)
-	orderUseCase := usecase.NewOrderUseCase(orderRepo, timeoutContext)
+	orderUseCase := usecase.NewOrderUseCase(orderRepo, outRepo, timeoutContext)
 	rtrUseCase := usecase.NewRtrUseCase(rtrRepo, timeoutContext)
 	stockOutletUseCase := usecase.NewStockOutletUseCase(stockOutletRepo, timeoutContext)
 	opnameUseCase := usecase.NewOpnameUseCase(opnameRepo, timeoutContext)
