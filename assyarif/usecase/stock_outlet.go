@@ -203,6 +203,14 @@ func (c *stockOutletUseCase) IncreaseDashboardMultiple(ctx context.Context, req 
 					return nil, errCreated
 				}
 				stockOutlets = append(stockOutlets, *res)
+			} else {
+				fmt.Println("StockReq Not Match", stockReq, "Stock Not Match", st)
+				st, err := c.stockOutletRepository.CreateStockOutlet(&stockReq)
+				if err != nil {
+					fmt.Println("StockReq2", stockReq, "Stock2", st)
+					return nil, err
+				}
+				stockOutlets = append(stockOutlets, *st)
 			}
 		}
 	}
