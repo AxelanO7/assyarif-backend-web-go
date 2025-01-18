@@ -55,6 +55,7 @@ func (c *orderUseCase) ShowOrders(ctx context.Context) ([]domain.Order, error) {
 			if finalOrders[i].ID == outs[j].Order.ID {
 				finalOrders = append(finalOrders[:i], finalOrders[i+1:]...)
 				i--
+				break
 			}
 		}
 	}
