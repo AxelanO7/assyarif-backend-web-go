@@ -15,14 +15,21 @@ func NewOutHandler(c *fiber.App, das domain.OutUseCase) {
 		OutUC: das,
 	}
 	api := c.Group("/stuff")
+
 	out := api.Group("/out")
 	out.Get("/", handler.ShowOuts)
 	out.Get("/:id", handler.ShowOutById)
-	out.Post("/", handler.AddOut)
-	out.Put("/:id", handler.EditOutById)
-	out.Delete("/:id", handler.DeleteOutById)
+	out.Get("/last", handler.GetLastOutNumber)
 
+	period := api.Group("/period")
+	period.Get("/", handler.GetOutByPeriod)
+
+	out.Post("/", handler.AddOut)
 	out.Post("/multiple", handler.AddOuts)
+
+	out.Put("/:id", handler.EditOutById)
+
+	out.Delete("/:id", handler.DeleteOutById)
 
 	last := api.Group("/last")
 	outLast := last.Group("/out")
@@ -156,6 +163,24 @@ func (t *OutHandler) AddOuts(c *fiber.Ctx) error {
 	}
 
 	res, er := t.OutUC.AddOuts(c.Context(), out)
+	if er != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"status":  400,
+			"success": false,
+			"data":    nil,
+			"message": er.Error(),
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status":  200,
+		"success": true,
+		"data":    res,
+		"message": "Success get data",
+	})
+}
+
+func (t *OutHandler) GetOutByPeriod(c *fiber.Ctx) error {
+	res, er := t.OutUC.GetOutsByPeriod(c.Context())
 	if er != nil {
 		return c.Status(400).JSON(fiber.Map{
 			"status":  400,
