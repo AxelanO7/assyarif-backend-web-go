@@ -32,7 +32,7 @@ func NewStockHandler(c *fiber.App, das domain.StockUseCase) {
 	private.Put("/stuff/decrease-dashboard/multiple", handler.DecreaseStocks)
 	private.Put("/stuff/update-description/multiple", handler.UpdateDescription)
 
-	period := api.Group("/period")
+	period := api.Group("/period/stock")
 	period.Get("/", handler.GetStocksByPeriod)
 }
 
