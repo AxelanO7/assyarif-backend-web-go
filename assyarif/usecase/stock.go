@@ -28,7 +28,7 @@ func (c *stockUseCase) FetchStockByID(ctx context.Context, id uint) (*domain.Sto
 }
 
 func (c *stockUseCase) FetchStocks(ctx context.Context) ([]domain.Stock, error) {
-	res, err := c.stockRepository.RetrieveAllStock()
+	res, err := c.stockRepository.RetrieveStocks()
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (c *stockUseCase) DeleteStock(ctx context.Context, id uint) error {
 }
 
 func (c *stockUseCase) DecreaseStocks(ctx context.Context, req []domain.Stock) ([]domain.Stock, error) {
-	stocks, err := c.stockRepository.RetrieveAllStock()
+	stocks, err := c.stockRepository.RetrieveStocks()
 	resultStocks := []domain.Stock{}
 	if err != nil {
 		return nil, err
@@ -78,7 +78,7 @@ func (c *stockUseCase) DecreaseStocks(ctx context.Context, req []domain.Stock) (
 			}
 		}
 	}
-	afterStocks, err := c.stockRepository.RetrieveAllStock()
+	afterStocks, err := c.stockRepository.RetrieveStocks()
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (c *stockUseCase) DecreaseStocks(ctx context.Context, req []domain.Stock) (
 }
 
 func (c *stockUseCase) IncreaseStocks(ctx context.Context, req []domain.Stock) ([]domain.Stock, error) {
-	stocks, err := c.stockRepository.RetrieveAllStock()
+	stocks, err := c.stockRepository.RetrieveStocks()
 	resultStocks := []domain.Stock{}
 	if err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ func (c *stockUseCase) IncreaseStocks(ctx context.Context, req []domain.Stock) (
 			}
 		}
 	}
-	afterStocks, err := c.stockRepository.RetrieveAllStock()
+	afterStocks, err := c.stockRepository.RetrieveStocks()
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +113,7 @@ func (c *stockUseCase) IncreaseStocks(ctx context.Context, req []domain.Stock) (
 }
 
 func (c *stockUseCase) UpdateDescription(ctx context.Context, req []domain.UpdateDescriptionRequest) ([]domain.Stock, error) {
-	stocks, err := c.stockRepository.RetrieveAllStock()
+	stocks, err := c.stockRepository.RetrieveStocks()
 	resultStocks := []domain.Stock{}
 	if err != nil {
 		return nil, err
@@ -132,4 +132,30 @@ func (c *stockUseCase) UpdateDescription(ctx context.Context, req []domain.Updat
 		}
 	}
 	return resultStocks, nil
+}
+
+func (c *stockUseCase) GetStocksByPeriod(ctx context.Context) ([]domain.PeriodStock, error) {
+	// get stocks
+	stocks, err := c.stockRepository.RetrieveStocks()
+	if err != nil {
+		return nil, err
+	}
+
+	// group by month and year
+	periodMap := make(map[string][]domain.Stock)
+
+	for _, stock := range stocks {
+		period := fmt.Sprintf("%d-%d", stock.CreatedAt.Month(), stock.CreatedAt.Year())
+		periodMap[period] = append(periodMap[period], stock)
+	}
+
+	periodStocks := []domain.PeriodStock{}
+	for period, stocks := range periodMap {
+		periodStocks = append(periodStocks, domain.PeriodStock{
+			Date:   period,
+			Stocks: stocks,
+		})
+	}
+
+	return periodStocks, nil
 }
