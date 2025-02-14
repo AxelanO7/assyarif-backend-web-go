@@ -20,20 +20,17 @@ func NewOutHandler(c *fiber.App, das domain.OutUseCase) {
 	out.Get("/", handler.ShowOuts)
 	out.Get("/:id", handler.ShowOutById)
 	out.Get("/last", handler.GetLastOutNumber)
-
-	period := api.Group("/period")
-	period.Get("/", handler.GetOutByPeriod)
-
 	out.Post("/", handler.AddOut)
 	out.Post("/multiple", handler.AddOuts)
-
 	out.Put("/:id", handler.EditOutById)
-
 	out.Delete("/:id", handler.DeleteOutById)
-
+	
 	last := api.Group("/last")
 	outLast := last.Group("/out")
 	outLast.Get("/", handler.GetLastOutNumber)
+	
+	period := api.Group("/period")
+	period.Get("/", handler.GetOutsByPeriod)
 }
 
 func (t *OutHandler) ShowOuts(c *fiber.Ctx) error {
@@ -179,7 +176,7 @@ func (t *OutHandler) AddOuts(c *fiber.Ctx) error {
 	})
 }
 
-func (t *OutHandler) GetOutByPeriod(c *fiber.Ctx) error {
+func (t *OutHandler) GetOutsByPeriod(c *fiber.Ctx) error {
 	res, er := t.OutUC.GetOutsByPeriod(c.Context())
 	if er != nil {
 		return c.Status(400).JSON(fiber.Map{
