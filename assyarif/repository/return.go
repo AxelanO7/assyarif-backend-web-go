@@ -18,7 +18,7 @@ func NewPostgreRtr(client *gorm.DB) domain.RtrRepository {
 	}
 }
 
-func (a *posgreRtrRepository) RetrieveAllRtr() ([]domain.Rtr, error) {
+func (a *posgreRtrRepository) RetrieveRtrs() ([]domain.Rtr, error) {
 	var res []domain.Rtr
 	err := a.DB.
 		Model(domain.Rtr{}).
