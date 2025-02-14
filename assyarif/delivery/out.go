@@ -24,12 +24,12 @@ func NewOutHandler(c *fiber.App, das domain.OutUseCase) {
 	out.Post("/multiple", handler.AddOuts)
 	out.Put("/:id", handler.EditOutById)
 	out.Delete("/:id", handler.DeleteOutById)
-	
+
 	last := api.Group("/last")
 	outLast := last.Group("/out")
 	outLast.Get("/", handler.GetLastOutNumber)
-	
-	period := api.Group("/period")
+
+	period := api.Group("/period/out")
 	period.Get("/", handler.GetOutsByPeriod)
 }
 
