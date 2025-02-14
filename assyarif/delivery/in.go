@@ -26,7 +26,7 @@ func NewInHandler(c *fiber.App, das domain.InUseCase) {
 	inLast := last.Group("/in")
 	inLast.Get("/", handler.GetLastInNumber)
 
-	period := api.Group("/period")
+	period := api.Group("/period/in")
 	period.Get("/", handler.GetInsByPeriod)
 }
 
