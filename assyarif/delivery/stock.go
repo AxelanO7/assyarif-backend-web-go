@@ -31,6 +31,9 @@ func NewStockHandler(c *fiber.App, das domain.StockUseCase) {
 	private.Put("/stuff/increase-dashboard/multiple", handler.IncreaseStocks)
 	private.Put("/stuff/decrease-dashboard/multiple", handler.DecreaseStocks)
 	private.Put("/stuff/update-description/multiple", handler.UpdateDescription)
+
+	period := api.Group("/period")
+	period.Get("/", handler.GetStocksByPeriod)
 }
 
 func (t *StockHandler) GetAllStock(c *fiber.Ctx) error {
@@ -259,5 +262,23 @@ func (t *StockHandler) UpdateDescription(c *fiber.Ctx) error {
 		"success": true,
 		"data":    res,
 		"message": "Successfully update description",
+	})
+}
+
+func (t *StockHandler) GetStocksByPeriod(c *fiber.Ctx) error {
+	res, er := t.StockUC.GetStocksByPeriod(c.Context())
+	if er != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"status":  400,
+			"success": false,
+			"data":    nil,
+			"message": er.Error(),
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status":  200,
+		"success": true,
+		"data":    res,
+		"message": "Success get data",
 	})
 }
