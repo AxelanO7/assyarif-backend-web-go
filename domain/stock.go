@@ -26,8 +26,13 @@ type UpdateDescriptionRequest struct {
 	Description string `json:"description"`
 }
 
+type PeriodStock struct {
+	Date   string  `json:"date"`
+	Stocks []Stock `json:"stocks"`
+}
+
 type StockRepository interface {
-	RetrieveAllStock() ([]Stock, error)
+	RetrieveStocks() ([]Stock, error)
 	RetrieveStockByID(id uint) (*Stock, error)
 	CreateStock(Stock *Stock) (*Stock, error)
 	UpdateStock(Stock *Stock) (*Stock, error)
@@ -45,4 +50,5 @@ type StockUseCase interface {
 	IncreaseStocks(ctx context.Context, req []Stock) ([]Stock, error)
 	DecreaseStocks(ctx context.Context, req []Stock) ([]Stock, error)
 	UpdateDescription(ctx context.Context, req []UpdateDescriptionRequest) ([]Stock, error)
+	GetStocksByPeriod(ctx context.Context) ([]PeriodStock, error)
 }
