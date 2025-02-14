@@ -21,8 +21,13 @@ type Rtr struct {
 	DeletedAt   gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
+type PeriodRtr struct {
+	Date string `json:"date"`
+	Rtrs []Rtr  `json:"rtrs"`
+}
+
 type RtrRepository interface {
-	RetrieveAllRtr() ([]Rtr, error)
+	RetrieveRtrs() ([]Rtr, error)
 	RetrieveRtrByID(id uint) (*Rtr, error)
 	CreateRtr(Rtr *Rtr) (*Rtr, error)
 	UpdateRtr(Rtr *Rtr) (*Rtr, error)
@@ -35,4 +40,5 @@ type RtrUseCase interface {
 	CreateRtr(ctx context.Context, req *Rtr) (*Rtr, error)
 	UpdateRtr(ctx context.Context, req *Rtr) (*Rtr, error)
 	DeleteRtr(ctx context.Context, id uint) error
+	GetRtrsByPeriod(ctx context.Context) ([]PeriodRtr, error)
 }
