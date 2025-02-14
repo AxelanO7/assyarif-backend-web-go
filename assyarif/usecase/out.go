@@ -61,3 +61,33 @@ func (c *outUseCase) DeleteOutByID(ctx context.Context, id string) error {
 func (c *outUseCase) AddOuts(ctx context.Context, outs []domain.Out) ([]domain.Out, error) {
 	return c.outRepository.CreateOuts(outs)
 }
+
+func (c *outUseCase) GetOutsByPeriod(ctx context.Context) ([]domain.PeriodOut, error) {
+	// get outs
+	outs, err := c.outRepository.RetrieveOuts()
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Println("outs by period", outs)
+
+	// group by month and year
+	periodMap := make(map[string][]domain.Out)
+
+	for _, out := range outs {
+		period := fmt.Sprintf("%d-%d", out.CreatedAt.Month(), out.CreatedAt.Year())
+		periodMap[period] = append(periodMap[period], out)
+	}
+
+	periodOuts := []domain.PeriodOut{}
+	for period, outs := range periodMap {
+		periodOuts = append(periodOuts, domain.PeriodOut{
+			Date: period,
+			Outs: outs,
+		})
+	}
+
+	fmt.Println("period outs", periodOuts)
+
+	return periodOuts, nil
+}
