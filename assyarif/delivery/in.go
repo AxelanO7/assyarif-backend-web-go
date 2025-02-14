@@ -25,6 +25,9 @@ func NewInHandler(c *fiber.App, das domain.InUseCase) {
 	last := api.Group("/last")
 	inLast := last.Group("/in")
 	inLast.Get("/", handler.GetLastInNumber)
+
+	period := api.Group("/period")
+	period.Get("/", handler.GetInsByPeriod)
 }
 
 func (t *InHandler) ShowIns(c *fiber.Ctx) error {
@@ -156,5 +159,23 @@ func (t *InHandler) DeleteInById(c *fiber.Ctx) error {
 		"success": true,
 		"data":    nil,
 		"message": "Success delete data",
+	})
+}
+
+func (t *InHandler) GetInsByPeriod(c *fiber.Ctx) error {
+	res, er := t.InUC.GetInsByPeriod(c.Context())
+	if er != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"status":  400,
+			"success": false,
+			"data":    nil,
+			"message": er.Error(),
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status":  200,
+		"success": true,
+		"data":    res,
+		"message": "Success get data",
 	})
 }
