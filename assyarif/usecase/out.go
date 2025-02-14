@@ -69,8 +69,6 @@ func (c *outUseCase) GetOutsByPeriod(ctx context.Context) ([]domain.PeriodOut, e
 		return nil, err
 	}
 
-	fmt.Println("outs by period", outs)
-
 	// group by month and year
 	periodMap := make(map[string][]domain.Out)
 
@@ -86,8 +84,6 @@ func (c *outUseCase) GetOutsByPeriod(ctx context.Context) ([]domain.PeriodOut, e
 			Outs: outs,
 		})
 	}
-
-	fmt.Println("period outs", periodOuts)
 
 	return periodOuts, nil
 }
