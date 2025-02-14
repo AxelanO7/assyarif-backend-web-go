@@ -18,7 +18,7 @@ func NewPostgreStock(client *gorm.DB) domain.StockRepository {
 	}
 }
 
-func (a *posgreStockRepository) RetrieveAllStock() ([]domain.Stock, error) {
+func (a *posgreStockRepository) RetrieveStocks() ([]domain.Stock, error) {
 	var res []domain.Stock
 	err := a.DB.
 		Model(domain.Stock{}).
