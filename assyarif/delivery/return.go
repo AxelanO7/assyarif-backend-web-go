@@ -26,6 +26,10 @@ func NewRtrHandler(c *fiber.App, das domain.RtrUseCase) {
 	private.Post("/stuff", handler.CreateRtr)
 	private.Put("/stuff/:id", handler.UpdateRtr)
 	private.Delete("/stuff/:id", handler.DeleteRtr)
+
+	period := api.Group("/period")
+	period.Get("/", handler.GetRtrsByPeriod)
+
 }
 
 func (t *RtrHandler) GetAllRtr(c *fiber.Ctx) error {
@@ -170,5 +174,23 @@ func (t *RtrHandler) DeleteRtr(c *fiber.Ctx) error {
 		"status":  200,
 		"success": true,
 		"message": "Successfully delete user",
+	})
+}
+
+func (t *RtrHandler) GetRtrsByPeriod(c *fiber.Ctx) error {
+	res, err := t.RtrUC.GetRtrsByPeriod(c.Context())
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  500,
+			"success": false,
+			"message": err,
+			"error":   err.Error(),
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status":  200,
+		"success": true,
+		"data":    res,
+		"message": "Successfully get all user",
 	})
 }
