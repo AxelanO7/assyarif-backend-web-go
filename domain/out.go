@@ -19,6 +19,11 @@ type Out struct {
 	DeletedAt   gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
+type PeriodOut struct {
+	Date string `json:"date"`
+	Outs []Out  `json:"outs"`
+}
+
 type OutRepository interface {
 	RetrieveOuts() ([]Out, error)
 	RetrieveOutByID(id string) (Out, error)
@@ -36,4 +41,5 @@ type OutUseCase interface {
 	DeleteOutByID(ctx context.Context, id string) error
 	ShowOutLastOrderID(ctx context.Context) (int, error)
 	AddOuts(ctx context.Context, outs []Out) ([]Out, error)
+	GetOutsByPeriod(ctx context.Context) ([]PeriodOut, error)
 }
