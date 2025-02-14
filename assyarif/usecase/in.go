@@ -57,3 +57,30 @@ func (c *inUseCase) EditInById(ctx context.Context, in domain.In) (domain.In, er
 func (c *inUseCase) DeleteInById(ctx context.Context, id string) error {
 	return c.inRepository.RemoveInById(id)
 }
+
+
+func (c *inUseCase) GetInsByPeriod(ctx context.Context) ([]domain.PeriodIn, error) {
+	// get ins
+	ins, err := c.inRepository.RetrieveIns()
+	if err != nil {
+		return nil, err
+	}
+
+	// group by month and year
+	periodMap := make(map[string][]domain.In)
+
+	for _, in := range ins {
+		period := fmt.Sprintf("%d-%d", in.CreatedAt.Month(), in.CreatedAt.Year())
+		periodMap[period] = append(periodMap[period], in)
+	}
+
+	periodIns := []domain.PeriodIn{}
+	for period, ins := range periodMap {
+		periodIns = append(periodIns, domain.PeriodIn{
+			Date: period,
+			Ins:  ins,
+		})
+	}
+
+	return periodIns, nil
+}
