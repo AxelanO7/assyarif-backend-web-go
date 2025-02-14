@@ -20,6 +20,11 @@ type In struct {
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
+type PeriodIn struct {
+	Date string `json:"date"`
+	Ins  []In   `json:"ins"`
+}
+
 type InRepository interface {
 	RetrieveIns() ([]In, error)
 	RetrieveInById(id string) (In, error)
@@ -35,4 +40,5 @@ type InUseCase interface {
 	AddIn(ctx context.Context, in In) (In, error)
 	EditInById(ctx context.Context, in In) (In, error)
 	DeleteInById(ctx context.Context, id string) error
+	GetInsByPeriod(ctx context.Context) ([]PeriodIn, error)
 }
