@@ -27,8 +27,25 @@ type UpdateDescriptionRequest struct {
 }
 
 type PeriodStock struct {
-	Date   string  `json:"date"`
-	Stocks []Stock `json:"stocks"`
+	Date   string        `json:"date"`
+	Stocks []StockReport `json:"stocks"`
+}
+type StockReport struct {
+	ID           uint           `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	IdStuff      uint           `json:"id_stuff"`
+	Name         string         `json:"name"`
+	Type         string         `json:"type"`
+	Quantity     float64        `json:"quantity"`
+	Unit         string         `json:"unit"`
+	Price        float64        `json:"price"`
+	Description  *string        `json:"description"`
+	InitialStock float64        `json:"initial_stock"`
+	FinalStock   float64        `json:"final_stock"`
+	InStock      float64        `json:"in_stock"`
+	OutStock     float64        `json:"out_stock"`
+	CreatedAt    *time.Time     `json:"created_at"`
+	UpdatedAt    *time.Time     `json:"updated_at"`
+	DeletedAt    gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
 type StockRepository interface {
